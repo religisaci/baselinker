@@ -39,7 +39,7 @@ class InventoryManufacturer
 		return $inventoryManufacturers;
 	}
 
-	public function addInventoryManufacturer(\Baselinker\Model\InventoryManufacturer $inventoryManufacturer): \Religisaci\Baselinker\Model\InventoryManufacturer
+	public function addInventoryManufacturer(\Religisaci\Baselinker\Model\InventoryManufacturer $inventoryManufacturer): \Religisaci\Baselinker\Model\InventoryManufacturer
 	{
 		$responseJSON = (string)$this->client->post('addInventoryManufacturer', $inventoryManufacturer->getData())->getBody();
 		$response = json_decode($responseJSON);

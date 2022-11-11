@@ -48,7 +48,7 @@ class Inventory
 		return $inventories;
 	}
 
-	public function addInventory(\Baselinker\Model\Inventory $inventory): \Religisaci\Baselinker\Model\Inventory
+	public function addInventory(\Religisaci\Baselinker\Model\Inventory $inventory): \Religisaci\Baselinker\Model\Inventory
 	{
 		$responseJSON = (string)$this->client->post('addInventory', $inventory->getData())->getBody();
 		$response = json_decode($responseJSON);

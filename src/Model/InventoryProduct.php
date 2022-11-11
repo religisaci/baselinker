@@ -96,6 +96,11 @@ class InventoryProduct
 			'inventory_id' => $this->inventory_id,
 			'name' => $this->name,
 		];
+		if(isset($this->product_id))
+		{
+			$data['product_id'] = $this->product_id;
+		}
+
 		if(isset($this->parent_id))
 		{
 			$data['parent_id'] = $this->parent_id;

@@ -98,10 +98,11 @@ class InventoryProduct
 		return $inventoryProducts;
 	}
 
-	public function addInventoryProduct(\Baselinker\Model\InventoryProduct $inventoryProduct): \Religisaci\Baselinker\Model\InventoryProduct
+	public function addInventoryProduct(\Religisaci\Baselinker\Model\InventoryProduct $inventoryProduct): \Religisaci\Baselinker\Model\InventoryProduct
 	{
 		$responseJSON = (string)$this->client->post('addInventoryProduct', $inventoryProduct->getData())->getBody();
 		$response = json_decode($responseJSON);
+
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
 		{
 			throw new ResponseException("Bad response. Response body:\n" . var_export($response, TRUE));
