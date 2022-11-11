@@ -1,0 +1,8 @@
+{
+	"name": "religisaci/baselinker",
+	"description": "Simply connector to api.baselinker.com",
+	"require": {
+		"php": ">=7.4",
+		"guzzlehttp/guzzle": "^6.5"
+	}
+}
