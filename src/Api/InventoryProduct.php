@@ -1,12 +1,12 @@
 <?php
 
-namespace Baselinker\Api;
+namespace Religisaci\Baselinker\Api;
 
-use Baselinker\Api\Exception\ResponseException;
-use Baselinker\Api\RequestParams\GetInventoryAvailableTextFieldKeys;
-use Baselinker\Api\RequestParams\GetInventoryProductsDataParams;
-use Baselinker\Api\RequestParams\GetInventoryProductsList;
-use Baselinker\Api\RequestParams\GetInventoryProductsListParams;
+use Religisaci\Baselinker\Api\Exception\ResponseException;
+use Religisaci\Baselinker\Api\RequestParams\GetInventoryAvailableTextFieldKeys;
+use Religisaci\Baselinker\Api\RequestParams\GetInventoryProductsDataParams;
+use Religisaci\Baselinker\Api\RequestParams\GetInventoryProductsList;
+use Religisaci\Baselinker\Api\RequestParams\GetInventoryProductsListParams;
 
 class InventoryProduct
 {
@@ -35,7 +35,7 @@ class InventoryProduct
 		foreach($response->products as $productId => $inventoryProductResponse)
 		{
 			dump($inventoryProductResponse);
-			$inventoryProduct = new \Baselinker\Model\InventoryProduct();
+			$inventoryProduct = new \Religisaci\Baselinker\Model\InventoryProduct();
 			$inventoryProduct->product_id = (int)$productId;
 			$inventoryProduct->inventory_id = $params->inventory_id;
 			$inventoryProduct->is_bundle = (bool)$inventoryProductResponse->is_bundle;
@@ -83,7 +83,7 @@ class InventoryProduct
 
 		foreach($response->products as $productId => $inventoryProductResponse)
 		{
-			$inventoryProduct = new \Baselinker\Model\InventoryProduct();
+			$inventoryProduct = new \Religisaci\Baselinker\Model\InventoryProduct();
 			$inventoryProduct->product_id = (int)$inventoryProductResponse->id;
 			$inventoryProduct->inventory_id = $params->inventory_id;
 			$inventoryProduct->ean = (string)$inventoryProductResponse->ean;
@@ -98,7 +98,7 @@ class InventoryProduct
 		return $inventoryProducts;
 	}
 
-	public function addInventoryProduct(\Baselinker\Model\InventoryProduct $inventoryProduct): \Baselinker\Model\InventoryProduct
+	public function addInventoryProduct(\Baselinker\Model\InventoryProduct $inventoryProduct): \Religisaci\Baselinker\Model\InventoryProduct
 	{
 		$responseJSON = (string)$this->client->post('addInventoryProduct', $inventoryProduct->getData())->getBody();
 		$response = json_decode($responseJSON);

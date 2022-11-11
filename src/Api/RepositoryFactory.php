@@ -1,6 +1,6 @@
 <?php
 
-namespace Baselinker\Api;
+namespace Religisaci\Baselinker\Api;
 
 class RepositoryFactory
 {

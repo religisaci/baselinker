@@ -1,8 +1,8 @@
 <?php
 
-namespace Baselinker\Api;
+namespace Religisaci\Baselinker\Api;
 
-use Baselinker\Api\Exception\ResponseException;
+use Religisaci\Baselinker\Api\Exception\ResponseException;
 
 class Inventory
 {
@@ -30,7 +30,7 @@ class Inventory
 
 		foreach($response->inventories as $inventoryResponse)
 		{
-			$inventory = new \Baselinker\Model\Inventory();
+			$inventory = new \Religisaci\Baselinker\Model\Inventory();
 			$inventory->inventory_id = (int)$inventoryResponse->inventory_id;
 			$inventory->name = (string)$inventoryResponse->name;
 			$inventory->description = (string)$inventoryResponse->description;
@@ -48,7 +48,7 @@ class Inventory
 		return $inventories;
 	}
 
-	public function addInventory(\Baselinker\Model\Inventory $inventory): \Baselinker\Model\Inventory
+	public function addInventory(\Baselinker\Model\Inventory $inventory): \Religisaci\Baselinker\Model\Inventory
 	{
 		$responseJSON = (string)$this->client->post('addInventory', $inventory->getData())->getBody();
 		$response = json_decode($responseJSON);

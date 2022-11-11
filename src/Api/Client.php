@@ -1,6 +1,6 @@
 <?php
 
-namespace Baselinker\Api;
+namespace Religisaci\Baselinker\Api;
 
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;

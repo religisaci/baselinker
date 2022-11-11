@@ -1,13 +1,12 @@
 <?php
 
-namespace Baselinker;
+namespace Religisaci\Baselinker;
 
-use Baselinker\Api\Client;
-use Baselinker\Api\Inventory;
-use Baselinker\Api\InventoryManufacturer;
-use Baselinker\Api\InventoryProduct;
-use Baselinker\Api\RepositoryFactory;
-use Mpdf\Tag\I;
+use Religisaci\Baselinker\Api\Client;
+use Religisaci\Baselinker\Api\Inventory;
+use Religisaci\Baselinker\Api\InventoryManufacturer;
+use Religisaci\Baselinker\Api\InventoryProduct;
+use Religisaci\Baselinker\Api\RepositoryFactory;
 
 class Baselinker
 {

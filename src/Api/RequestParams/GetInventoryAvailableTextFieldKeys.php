@@ -1,8 +1,8 @@
 <?php
 
-namespace Baselinker\Api\RequestParams;
+namespace Religisaci\Baselinker\Api\RequestParams;
 
-use Baselinker\Api\Exception\InvalidParameterException;
+use Religisaci\Baselinker\Api\Exception\InvalidParameterException;
 
 class GetInventoryAvailableTextFieldKeys
 {

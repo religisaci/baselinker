@@ -1,8 +1,8 @@
 <?php
 
-namespace Baselinker\Api;
+namespace Religisaci\Baselinker\Api;
 
-use Baselinker\Api\Exception\ResponseException;
+use Religisaci\Baselinker\Api\Exception\ResponseException;
 
 class InventoryManufacturer
 {
@@ -29,7 +29,7 @@ class InventoryManufacturer
 		}
 		foreach($response->manufacturers as $inventoryManufacturerResponse)
 		{
-			$inventoryManufacturer = new \Baselinker\Model\InventoryManufacturer();
+			$inventoryManufacturer = new \Religisaci\Baselinker\Model\InventoryManufacturer();
 			$inventoryManufacturer->manufacturer_id = (int)$inventoryManufacturerResponse->manufacturer_id;
 			$inventoryManufacturer->name = (string)$inventoryManufacturerResponse->name;
 			$inventoryManufacturers[] = $inventoryManufacturer;
@@ -39,7 +39,7 @@ class InventoryManufacturer
 		return $inventoryManufacturers;
 	}
 
-	public function addInventoryManufacturer(\Baselinker\Model\InventoryManufacturer $inventoryManufacturer): \Baselinker\Model\InventoryManufacturer
+	public function addInventoryManufacturer(\Baselinker\Model\InventoryManufacturer $inventoryManufacturer): \Religisaci\Baselinker\Model\InventoryManufacturer
 	{
 		$responseJSON = (string)$this->client->post('addInventoryManufacturer', $inventoryManufacturer->getData())->getBody();
 		$response = json_decode($responseJSON);

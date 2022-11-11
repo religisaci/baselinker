@@ -1,6 +1,6 @@
 <?php
 
-namespace Baselinker\Model;
+namespace Religisaci\Baselinker\Model;
 
 class Inventory
 {

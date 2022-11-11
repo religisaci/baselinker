@@ -1,6 +1,6 @@
 <?php
 
-namespace Baselinker\Api\Exception;
+namespace Religisaci\Baselinker\Api\Exception;
 
 class ResponseException extends \Exception
 {
