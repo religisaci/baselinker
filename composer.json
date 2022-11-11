@@ -1,8 +1,24 @@
 {
 	"name": "religisaci/baselinker",
 	"description": "Simply connector to api.baselinker.com",
+	"type": "library",
+	"keywords": ["baselinker"],
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Libor  Šebek",
+			"email": "libor.sebek@religis.cz",
+			"homepage": "https://www.religis.cz",
+			"role": "Developer"
+		}
+	],
 	"require": {
 		"php": ">=7.4",
 		"guzzlehttp/guzzle": "^6.5"
+	},
+	"autoload": {
+		"psr-4": {
+			"Religisaci\\": "src/"
+		}
 	}
 }
