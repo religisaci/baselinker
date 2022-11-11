@@ -1,0 +1,138 @@
+<?php
+
+namespace Baselinker\Api;
+
+use Baselinker\Api\Exception\ResponseException;
+use Baselinker\Api\RequestParams\GetInventoryAvailableTextFieldKeys;
+use Baselinker\Api\RequestParams\GetInventoryProductsDataParams;
+use Baselinker\Api\RequestParams\GetInventoryProductsList;
+use Baselinker\Api\RequestParams\GetInventoryProductsListParams;
+
+class InventoryProduct
+{
+	private Client $client;
+
+	public function __construct(Client $client)
+	{
+		$this->client = $client;
+	}
+
+	/**
+	 * @param array $params
+	 * @return array
+	 * @throws ResponseException
+	 */
+	public function getInventoryProductsData(?GetInventoryProductsDataParams $params = NULL): array
+	{
+		$inventoryProducts = [];
+		$responseJSON = (string)$this->client->post('getInventoryProductsData', $params ? $params->getParams() : [])->getBody();
+		$response = json_decode($responseJSON);
+		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
+		{
+			throw new ResponseException("Bad response. Response body:\n" . var_export($response, TRUE));
+		}
+
+		foreach($response->products as $productId => $inventoryProductResponse)
+		{
+			dump($inventoryProductResponse);
+			$inventoryProduct = new \Baselinker\Model\InventoryProduct();
+			$inventoryProduct->product_id = (int)$productId;
+			$inventoryProduct->inventory_id = $params->inventory_id;
+			$inventoryProduct->is_bundle = (bool)$inventoryProductResponse->is_bundle;
+			$inventoryProduct->ean = (string)$inventoryProductResponse->ean;
+			$inventoryProduct->sku = (string)$inventoryProductResponse->sku;
+			$inventoryProduct->tax_rate = (float)$inventoryProductResponse->tax_rate;
+			$inventoryProduct->weight = (float)$inventoryProductResponse->weight;
+			$inventoryProduct->height = (float)$inventoryProductResponse->height;
+			$inventoryProduct->width = (float)$inventoryProductResponse->width;
+			$inventoryProduct->length = (float)$inventoryProductResponse->length;
+			$inventoryProduct->star = (float)$inventoryProductResponse->star;
+			$inventoryProduct->category_id = (int)$inventoryProductResponse->category_id;
+			$inventoryProduct->manufacturer_id = (int)$inventoryProductResponse->manufacturer_id;
+			$inventoryProduct->prices = (array)$inventoryProductResponse->prices;
+			$inventoryProduct->stock = (array)$inventoryProductResponse->stock;
+			$inventoryProduct->locations = (array)$inventoryProductResponse->locations;
+			$inventoryProduct->text_fields = (array)$inventoryProductResponse->text_fields;
+			$inventoryProduct->average_cost = (float)$inventoryProductResponse->average_cost;
+			$inventoryProduct->average_landed_cost = (float)$inventoryProductResponse->average_landed_cost;
+			$inventoryProduct->images = (array)$inventoryProductResponse->images;
+			$inventoryProduct->links = (array)$inventoryProductResponse->links;
+			$inventoryProduct->variants = (array)$inventoryProductResponse->variants;
+			$inventoryProducts[] = $inventoryProduct;
+
+		}
+
+
+		return $inventoryProducts;
+	}
+
+	/**
+	 * @param array $params
+	 * @return array
+	 * @throws ResponseException
+	 */
+	public function getInventoryProductsList(?GetInventoryProductsListParams $params = NULL): array
+	{
+		$inventoryProducts = [];
+		$responseJSON = (string)$this->client->post('getInventoryProductsList', $params ? $params->getParams() : [])->getBody();
+		$response = json_decode($responseJSON);
+		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
+		{
+			throw new ResponseException("Bad response. Response body:\n" . var_export($response, TRUE));
+		}
+
+		foreach($response->products as $productId => $inventoryProductResponse)
+		{
+			$inventoryProduct = new \Baselinker\Model\InventoryProduct();
+			$inventoryProduct->product_id = (int)$inventoryProductResponse->id;
+			$inventoryProduct->inventory_id = $params->inventory_id;
+			$inventoryProduct->ean = (string)$inventoryProductResponse->ean;
+			$inventoryProduct->sku = (string)$inventoryProductResponse->sku;
+			$inventoryProduct->name = (string)$inventoryProductResponse->name;
+			$inventoryProduct->prices = (array)$inventoryProductResponse->prices;
+			$inventoryProduct->stock = (array)$inventoryProductResponse->stock;
+			$inventoryProducts[] = $inventoryProduct;
+		}
+
+
+		return $inventoryProducts;
+	}
+
+	public function addInventoryProduct(\Baselinker\Model\InventoryProduct $inventoryProduct): \Baselinker\Model\InventoryProduct
+	{
+		$responseJSON = (string)$this->client->post('addInventoryProduct', $inventoryProduct->getData())->getBody();
+		$response = json_decode($responseJSON);
+		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
+		{
+			throw new ResponseException("Bad response. Response body:\n" . var_export($response, TRUE));
+		}
+
+		$inventoryProduct->product_id = (int)$response->product_id;
+
+		return $inventoryProduct;
+	}
+
+	public function getInventoryAvailableTextFieldKeys(GetInventoryAvailableTextFieldKeys $params): \stdClass
+	{
+		$responseJSON = (string)$this->client->post('getInventoryAvailableTextFieldKeys', $params ? $params->getParams() : [])->getBody();
+		$response = json_decode($responseJSON);
+		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
+		{
+			throw new ResponseException("Bad response. Response body:\n" . var_export($response, TRUE));
+		}
+
+		return $response->text_field_keys;
+	}
+
+	public function deleteInventoryProduct(int $inventoryProductId): bool
+	{
+		$responseJSON = (string)$this->client->post('deleteInventoryProduct', ['product_id' => $inventoryProductId])->getBody();
+		$response = json_decode($responseJSON);
+		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
+		{
+			throw new ResponseException("Bad response. Response body:\n" . var_export($response, TRUE));
+		}
+
+		return TRUE;
+	}
+}
