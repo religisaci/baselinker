@@ -2,12 +2,15 @@
 
 namespace Religisaci\Baselinker\Api;
 
-use Religisaci\Baselinker\Api\Exception\ResponseException;
+use Religisaci\Baselinker\Exception\ResponseException;
 
 class InventoryManufacturer
 {
 	private Client $client;
 
+	/**
+	 * @param Client $client
+	 */
 	public function __construct(Client $client)
 	{
 		$this->client = $client;
@@ -25,7 +28,9 @@ class InventoryManufacturer
 		$response = json_decode($responseJSON);
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
 		{
-			throw new ResponseException("Bad response. Response body:\n" . var_export($response, TRUE));
+			$exception = new ResponseException("Bad response. Response body:\n" . var_export($response, TRUE));
+			$exception->response = $responseJSON;
+			throw $exception;
 		}
 		foreach($response->manufacturers as $inventoryManufacturerResponse)
 		{
@@ -39,13 +44,20 @@ class InventoryManufacturer
 		return $inventoryManufacturers;
 	}
 
+	/**
+	 * @param \Religisaci\Baselinker\Model\InventoryManufacturer $inventoryManufacturer
+	 * @return \Religisaci\Baselinker\Model\InventoryManufacturer
+	 * @throws ResponseException
+	 */
 	public function addInventoryManufacturer(\Religisaci\Baselinker\Model\InventoryManufacturer $inventoryManufacturer): \Religisaci\Baselinker\Model\InventoryManufacturer
 	{
 		$responseJSON = (string)$this->client->post('addInventoryManufacturer', $inventoryManufacturer->getData())->getBody();
 		$response = json_decode($responseJSON);
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
 		{
-			throw new ResponseException("Bad response. Response body:\n" . var_export($response, TRUE));
+			$exception = new ResponseException("Bad response. Response body:\n" . var_export($response, TRUE));
+			$exception->response = $responseJSON;
+			throw $exception;
 		}
 
 		$inventoryManufacturer->manufacturer_id = (int)$response->manufacturer_id;
@@ -53,13 +65,20 @@ class InventoryManufacturer
 		return $inventoryManufacturer;
 	}
 
+	/**
+	 * @param int $inventoryManufacturerId
+	 * @return bool
+	 * @throws ResponseException
+	 */
 	public function deleteInventoryManufacturer(int $inventoryManufacturerId): bool
 	{
 		$responseJSON = (string)$this->client->post('deleteInventoryManufacturer', ['manufacturer_id' => $inventoryManufacturerId])->getBody();
 		$response = json_decode($responseJSON);
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
 		{
-			throw new ResponseException("Bad response. Response body:\n" . var_export($response, TRUE));
+			$exception = new ResponseException("Bad response. Response body:\n" . var_export($response, TRUE));
+			$exception->response = $responseJSON;
+			throw $exception;
 		}
 
 		return TRUE;

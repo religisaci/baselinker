@@ -1,6 +1,6 @@
 <?php
 
-namespace Religisaci\Baselinker\Api\Exception;
+namespace Religisaci\Baselinker\Exception;
 
 class InvalidParameterException extends \Exception
 {

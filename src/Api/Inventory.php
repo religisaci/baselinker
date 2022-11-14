@@ -2,7 +2,7 @@
 
 namespace Religisaci\Baselinker\Api;
 
-use Religisaci\Baselinker\Api\Exception\ResponseException;
+use Religisaci\Baselinker\Exception\ResponseException;
 
 class Inventory
 {

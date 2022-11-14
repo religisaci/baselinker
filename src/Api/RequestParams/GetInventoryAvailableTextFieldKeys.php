@@ -2,7 +2,7 @@
 
 namespace Religisaci\Baselinker\Api\RequestParams;
 
-use Religisaci\Baselinker\Api\Exception\InvalidParameterException;
+use Religisaci\Baselinker\Exception\InvalidParameterException;
 
 class GetInventoryAvailableTextFieldKeys
 {

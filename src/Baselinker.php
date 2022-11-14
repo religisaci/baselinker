@@ -5,18 +5,22 @@ namespace Religisaci\Baselinker;
 use Religisaci\Baselinker\Api\Client;
 use Religisaci\Baselinker\Api\Inventory;
 use Religisaci\Baselinker\Api\InventoryManufacturer;
+use Religisaci\Baselinker\Api\InventoryPriceGroup;
 use Religisaci\Baselinker\Api\InventoryProduct;
+use Religisaci\Baselinker\Api\InventoryWarehouse;
 use Religisaci\Baselinker\Api\RepositoryFactory;
 
 class Baselinker
 {
 	private Client $client;
+	private Config $config;
 	private RepositoryFactory $repositoryFactory;
 	private ?InventoryManufacturer $inventoryManufacturer;
 
-	public function __construct(string $token)
+	public function __construct(array $config)
 	{
-		$this->client = new Client($token);
+		$this->config = new Config($config);
+		$this->client = new Client($this->config->getConfigValue('token'));
 		$this->repositoryFactory = new RepositoryFactory($this->client);
 	}
 
@@ -36,24 +40,13 @@ class Baselinker
 		return $this->repositoryFactory->getInventoryProduct();
 	}
 
-	public function getProductsList()
+	public function InventoryPriceGroup():InventoryPriceGroup
 	{
-		dump(json_decode($this->client->post('getInventoryProductsList', [
-			'inventory_id' => 33144,
-
-		])->getBody()->getContents()));
+		return $this->repositoryFactory->getInventoryPriceGroup();
 	}
 
-	public function getProducts()
+	public function InventoryWarehouse():InventoryWarehouse
 	{
-		dump(json_decode($this->client->post('getInventoryProductsData', [
-			'inventory_id' => 33144,
-			'products' => [151812322],
-		])->getBody()->getContents()));
-	}
-
-	public function getInventories()
-	{
-		dump(json_decode($this->client->post('getInventories', [])->getBody()->getContents()));
+		return $this->repositoryFactory->getInventoryWarehouse();
 	}
 }

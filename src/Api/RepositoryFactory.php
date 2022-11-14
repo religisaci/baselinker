@@ -7,6 +7,8 @@ class RepositoryFactory
 	private Inventory $inventory;
 	private InventoryManufacturer $inventoryManufacturer;
 	private InventoryProduct $inventoryProduct;
+	private InventoryPriceGroup $inventoryPriceGroup;
+	private InventoryWarehouse $inventoryWarehouse;
 	private Client $client;
 
 	/**
@@ -54,5 +56,31 @@ class RepositoryFactory
 		}
 
 		return $this->inventoryProduct;
+	}
+
+	/**
+	 * @return InventoryProduct
+	 */
+	public function getInventoryPriceGroup():InventoryPriceGroup
+	{
+		if(!isset($this->inventoryPriceGroup))
+		{
+			$this->inventoryPriceGroup = new InventoryPriceGroup($this->client);
+		}
+
+		return $this->inventoryPriceGroup;
+	}
+
+	/**
+	 * @return InventoryWarehouse
+	 */
+	public function getInventoryWarehouse():InventoryWarehouse
+	{
+		if(!isset($this->inventoryWarehouse))
+		{
+			$this->inventoryWarehouse = new InventoryWarehouse($this->client);
+		}
+
+		return $this->inventoryWarehouse;
 	}
 }

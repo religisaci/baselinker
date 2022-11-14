@@ -29,6 +29,7 @@ class InventoryProduct
 	public ?float $average_cost;
 	public ?float $average_landed_cost;
 	public ?array $variants;
+	private ?array $parameters;
 
 	public function addName(string $text, ?string $language = NULL, ?string $service = NULL, ?int $serviceId = NULL)
 	{
@@ -69,22 +70,53 @@ class InventoryProduct
 		$this->addTextField('features', $text, $language, $service, $serviceId);
 	}
 
+	public function addPrice(int $inventoryPriceGroupId, float $price)
+	{
+		if(!isset($this->prices))
+		{
+			$this->prices = [];
+		}
+		$this->prices[$inventoryPriceGroupId] = $price;
+	}
+
+	public function addStock(string $warehouseId, int $count)
+	{
+		if(!isset($this->prices))
+		{
+			$this->stock = [];
+		}
+		$this->stock[$warehouseId] = $count;
+	}
+
+	public function addParameter(string $name, string $value)
+	{
+		if(!isset($this->parameters))
+		{
+			$this->parameters = [];
+		}
+		$this->parameters[$name][$value] = $value;
+	}
+
 	public function addTextField(string $textFiled, string $text, ?string $language = NULL, ?string $service = NULL, ?int $serviceId = NULL)
 	{
+		if(!isset($this->text_fields))
+		{
+			$this->text_fields = [];
+		}
 		$key = $textFiled;
 		if(isset($language))
 		{
-			$key .= '|'.$language;
+			$key .= '|' . $language;
 
 			if(isset($service))
 			{
-				$key .= '|'.$service;
+				$key .= '|' . $service;
 
 				if(!isset($serviceId))
 				{
 					$serviceId = 0;
 				}
-				$key .= '_'.$serviceId;
+				$key .= '_' . $serviceId;
 			}
 		}
 		$this->text_fields[$key] = $text;
@@ -129,6 +161,11 @@ class InventoryProduct
 		if(isset($this->sku))
 		{
 			$data['sku'] = $this->sku;
+		}
+
+		if(isset($this->prices))
+		{
+			$data['prices'] = $this->prices;
 		}
 
 		if(isset($this->tax_rate))
@@ -178,7 +215,26 @@ class InventoryProduct
 
 		if(isset($this->text_fields))
 		{
+			if(!isset($data['text_fields']))
+			{
+				$data['text_fields'] = [];
+			}
 			$data['text_fields'] = $this->text_fields;
+		}
+		if(isset($this->parameters))
+		{
+			if(!isset($data['text_fields']))
+			{
+				$data['text_fields'] = [];
+			}
+			$data['text_fields']['features'] = [];
+			foreach($this->parameters as $parameter => $values)
+			{
+				foreach($values as $value)
+				{
+					$data['text_fields']['features'][$parameter] = $value;
+				}
+			}
 		}
 
 		if(isset($this->images))
