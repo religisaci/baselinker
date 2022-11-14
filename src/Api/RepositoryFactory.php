@@ -9,6 +9,7 @@ class RepositoryFactory
 	private InventoryProduct $inventoryProduct;
 	private InventoryPriceGroup $inventoryPriceGroup;
 	private InventoryWarehouse $inventoryWarehouse;
+	private Order $order;
 	private Client $client;
 
 	/**
@@ -82,5 +83,15 @@ class RepositoryFactory
 		}
 
 		return $this->inventoryWarehouse;
+	}
+
+	public function getOrder():Order
+	{
+		if(!isset($this->order))
+		{
+			$this->order = new Order($this->client);
+		}
+
+		return $this->order;
 	}
 }
