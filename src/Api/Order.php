@@ -2,7 +2,7 @@
 
 namespace Religisaci\Baselinker\Api;
 
-use Religisaci\Baselinker\Api\Exception\ResponseException;
+use Religisaci\Baselinker\Exception\ResponseException;
 use Religisaci\Baselinker\Api\RequestParams\GetOrdersParams;
 use Religisaci\Baselinker\Model\OrderProduct;
 
@@ -114,5 +114,43 @@ class Order
 		}
 
 		return $orders;
+	}
+
+	public function getOrderStatusList():array
+	{
+		$orderStatuses = [];
+		$responseJSON = (string)$this->client->post('getOrderStatusList')->getBody();
+		$response = json_decode($responseJSON);
+		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
+		{
+			$exception = new ResponseException("Bad response. Response body:\n" . var_export($response, TRUE));
+			$exception->response = $responseJSON;
+			throw $exception;
+		}
+		foreach($response->statuses as $orderStatusesResponse)
+		{
+			$orderStatus = new \Religisaci\Baselinker\Model\OrderStatus();
+			$orderStatus->id = (int)$orderStatusesResponse->id;
+			$orderStatus->name = (string)$orderStatusesResponse->name;
+			$orderStatus->name_for_customer = (string)$orderStatusesResponse->name_for_customer;
+			$orderStatuses[] = $orderStatus;
+		}
+
+
+		return $orderStatuses;
+	}
+
+	public function setOrderStatus(int $orderId, int $statusId): bool
+	{
+		$responseJSON = (string)$this->client->post('setOrderStatus', ['order_id' => $orderId, 'status_id' => $statusId])->getBody();
+		$response = json_decode($responseJSON);
+		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
+		{
+			$exception = new ResponseException("Bad response. Response body:\n" . var_export($response, TRUE));
+			$exception->response = $responseJSON;
+			throw $exception;
+		}
+
+		return TRUE;
 	}
 }
