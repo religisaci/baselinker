@@ -6,6 +6,7 @@ class RepositoryFactory
 {
 	private Inventory $inventory;
 	private InventoryManufacturer $inventoryManufacturer;
+	private InventoryCategory $inventoryCategory;
 	private InventoryProduct $inventoryProduct;
 	private InventoryPriceGroup $inventoryPriceGroup;
 	private InventoryWarehouse $inventoryWarehouse;
@@ -44,6 +45,19 @@ class RepositoryFactory
 		}
 
 		return $this->inventoryManufacturer;
+	}
+
+	/**
+	 * @return InventoryCategory
+	 */
+	public function getInventoryCategory():InventoryCategory
+	{
+		if(!isset($this->inventoryCategory))
+		{
+			$this->inventoryCategory = new InventoryCategory($this->client);
+		}
+
+		return $this->inventoryCategory;
 	}
 
 	/**

@@ -21,10 +21,10 @@ class InventoryManufacturer
 	 * @return array
 	 * @throws ResponseException
 	 */
-	public function getInventoryManufacturers(array $params = []): array
+	public function getInventoryManufacturers(): array
 	{
 		$inventoryManufacturers = [];
-		$responseJSON = (string)$this->client->post('getInventoryManufacturers', $params)->getBody();
+		$responseJSON = (string)$this->client->post('getInventoryManufacturers')->getBody();
 		$response = json_decode($responseJSON);
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
 		{

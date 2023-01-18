@@ -4,6 +4,7 @@ namespace Religisaci\Baselinker;
 
 use Religisaci\Baselinker\Api\Client;
 use Religisaci\Baselinker\Api\Inventory;
+use Religisaci\Baselinker\Api\InventoryCategory;
 use Religisaci\Baselinker\Api\InventoryManufacturer;
 use Religisaci\Baselinker\Api\InventoryPriceGroup;
 use Religisaci\Baselinker\Api\InventoryProduct;
@@ -34,6 +35,11 @@ class Baselinker
 	public function InventoryManufacturer():InventoryManufacturer
 	{
 		return $this->repositoryFactory->getInventoryManufacturer();
+	}
+
+	public function InventoryCategory():InventoryCategory
+	{
+		return $this->repositoryFactory->getInventoryCategory();
 	}
 
 	public function InventoryProduct():InventoryProduct
