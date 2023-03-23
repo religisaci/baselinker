@@ -11,6 +11,7 @@ use Religisaci\Baselinker\Api\InventoryProduct;
 use Religisaci\Baselinker\Api\InventoryWarehouse;
 use Religisaci\Baselinker\Api\Order;
 use Religisaci\Baselinker\Api\RepositoryFactory;
+use Religisaci\Baselinker\Api\Shipment;
 
 class Baselinker
 {
@@ -60,5 +61,10 @@ class Baselinker
 	public function Order():Order
 	{
 		return $this->repositoryFactory->getOrder();
+	}
+
+	public function Shipment():Shipment
+	{
+		return $this->repositoryFactory->getShipment();
 	}
 }

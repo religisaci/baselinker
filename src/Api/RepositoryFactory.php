@@ -11,6 +11,7 @@ class RepositoryFactory
 	private InventoryPriceGroup $inventoryPriceGroup;
 	private InventoryWarehouse $inventoryWarehouse;
 	private Order $order;
+	private Shipment $shipment;
 	private Client $client;
 
 	/**
@@ -107,5 +108,15 @@ class RepositoryFactory
 		}
 
 		return $this->order;
+	}
+
+	public function getShipment():Shipment
+	{
+		if(!isset($this->shipment))
+		{
+			$this->shipment = new Shipment($this->client);
+		}
+
+		return $this->shipment;
 	}
 }
