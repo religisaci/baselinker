@@ -2,6 +2,7 @@
 
 namespace Religisaci\Baselinker\Api;
 
+use Religisaci\Baselinker\Api\RequestParams\GetCourierFields;
 use Religisaci\Baselinker\Exception\ResponseException;
 use Religisaci\Baselinker\Model\PackageManual;
 
@@ -53,5 +54,20 @@ class Shipment
 		}
 
 		return $couriers;
+	}
+
+	public function getCourierFields(?GetCourierFields $params = NULL): \stdClass
+	{
+		$responseJSON = (string)$this->client->post('getCourierFields', $params ? $params->getParams() : [])->getBody();
+		$response = json_decode($responseJSON);
+		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
+		{
+			$exception = new ResponseException("Bad response. Response body:\n" . var_export($response, TRUE));
+			$exception->response = $responseJSON;
+			throw $exception;
+		}
+		unset($response->status);
+
+		return $response;
 	}
 }
