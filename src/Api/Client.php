@@ -13,11 +13,16 @@ class Client
 	private const  API_URL = 'https://api.baselinker.com/connector.php';
 	private int $countOfBlocking = 0;
 	private bool $waitIfBlockedToken;
+	private int $limitRequestPerMinute;
+	private int $currentMinute;
+	private int $requestInMinute = 0;
 
-	public function __construct(string $token, bool $waitIfBlockedToken = FALSE)
+	public function __construct(string $token, bool $waitIfBlockedToken = FALSE, $limitRequestPerMinute = 100)
 	{
 		$this->token = $token;
 		$this->waitIfBlockedToken = $waitIfBlockedToken;
+		$this->limitRequestPerMinute = $limitRequestPerMinute;
+		$this->currentMinute = (int)date('i');
 	}
 
 
@@ -39,6 +44,8 @@ class Client
 
 		do
 		{
+			$this->waitForNewSetOfRequests();
+
 			$response = $this->getClient()->post('', [
 				RequestOptions::FORM_PARAMS => $postData,
 			])->getBody();
@@ -59,14 +66,14 @@ class Client
 					if($datetimeEndBlocking)
 					{
 						$now = new \DateTime();
-						$timeFormWaiting = $datetimeEndBlocking->format('U') - $now->format('U');
-						if($timeFormWaiting > 300)
+						$timeForWaiting = $datetimeEndBlocking->format('U') - $now->format('U');
+						// default blocking time is 10 minutes
+						if($timeForWaiting > 660)
 						{
 							throw new BlockedToken('BaselinkerClient: ' . $responseData->error_message);
 						}
-						sleep($timeFormWaiting + 10);
+						sleep($timeForWaiting + 10);
 						continue;
-
 					}
 				}
 			}
@@ -76,6 +83,23 @@ class Client
 
 
 		return $response;
+	}
+
+	private function waitForNewSetOfRequests()
+	{
+		$currentMinute = (int)date('i');
+		if($this->currentMinute != $currentMinute)
+		{
+			$this->currentMinute = $currentMinute;
+			$this->requestInMinute = 0;
+		}
+		if($this->requestInMinute > $this->limitRequestPerMinute)
+		{
+			$sleepTime = 60 - (int)date('s');
+			sleep($sleepTime > 0 ? $sleepTime : 1);
+			$this->requestInMinute = 0;
+		}
+		$this->requestInMinute++;
 	}
 
 	private function getClient(): \GuzzleHttp\Client

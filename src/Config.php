@@ -9,6 +9,7 @@ class Config
 	private array $config = [
 		'token' => NULL,
 		'waitIfBlockedToken' => FALSE,
+		'limitRequestPerMinute' => 100,
 	];
 
 	/**
