@@ -23,7 +23,7 @@ class InventoryPriceGroup
 	public function getInventoryPriceGroups(): array
 	{
 		$inventoryPriceGroups = [];
-		$responseJSON = (string)$this->client->post('getInventoryPriceGroups')->getBody();
+		$responseJSON = (string)$this->client->post('getInventoryPriceGroups');
 		$response = json_decode($responseJSON);
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
 		{

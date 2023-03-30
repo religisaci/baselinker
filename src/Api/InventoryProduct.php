@@ -31,7 +31,7 @@ class InventoryProduct
 	public function getInventoryProductsData(?GetInventoryProductsDataParams $params = NULL): array
 	{
 		$inventoryProducts = [];
-		$responseJSON = (string)$this->client->post('getInventoryProductsData', $params ? $params->getParams() : [])->getBody();
+		$responseJSON = (string)$this->client->post('getInventoryProductsData', $params ? $params->getParams() : []);
 		$response = json_decode($responseJSON);
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
 		{
@@ -78,7 +78,7 @@ class InventoryProduct
 	public function getInventoryProductsList(?GetInventoryProductsListParams $params = NULL): array
 	{
 		$inventoryProducts = [];
-		$responseJSON = (string)$this->client->post('getInventoryProductsList', $params ? $params->getParams() : [])->getBody();
+		$responseJSON = (string)$this->client->post('getInventoryProductsList', $params ? $params->getParams() : []);
 		$response = json_decode($responseJSON);
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
 		{
@@ -110,7 +110,7 @@ class InventoryProduct
 	 */
 	public function addInventoryProduct(\Religisaci\Baselinker\Model\InventoryProduct $inventoryProduct): \Religisaci\Baselinker\Model\InventoryProduct
 	{
-		$responseJSON = (string)$this->client->post('addInventoryProduct', $inventoryProduct->getData())->getBody();
+		$responseJSON = (string)$this->client->post('addInventoryProduct', $inventoryProduct->getData());
 		$response = json_decode($responseJSON);
 
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
@@ -132,7 +132,7 @@ class InventoryProduct
 	 */
 	public function deleteInventoryProduct(int $inventoryProductId): bool
 	{
-		$responseJSON = (string)$this->client->post('deleteInventoryProduct', ['product_id' => $inventoryProductId])->getBody();
+		$responseJSON = (string)$this->client->post('deleteInventoryProduct', ['product_id' => $inventoryProductId]);
 		$response = json_decode($responseJSON);
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
 		{
@@ -152,7 +152,7 @@ class InventoryProduct
 	 */
 	public function getInventoryAvailableTextFieldKeys(GetInventoryAvailableTextFieldKeys $params): \stdClass
 	{
-		$responseJSON = (string)$this->client->post('getInventoryAvailableTextFieldKeys', $params ? $params->getParams() : [])->getBody();
+		$responseJSON = (string)$this->client->post('getInventoryAvailableTextFieldKeys', $params ? $params->getParams() : []);
 		$response = json_decode($responseJSON);
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
 		{
@@ -172,7 +172,7 @@ class InventoryProduct
 	 */
 	public function updateInventoryProductsStock(UpdateInventoryProductsStockParams $params): int
 	{
-		$responseJSON = (string)$this->client->post('updateInventoryProductsStock', $params->getParams())->getBody();
+		$responseJSON = (string)$this->client->post('updateInventoryProductsStock', $params->getParams());
 		$response = json_decode($responseJSON);
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
 		{
@@ -187,7 +187,7 @@ class InventoryProduct
 
 	public function updateInventoryProductsPrices(UpdateInventoryProductsPricesParams $params): int
 	{
-		$responseJSON = (string)$this->client->post('updateInventoryProductsPrices', $params->getParams())->getBody();
+		$responseJSON = (string)$this->client->post('updateInventoryProductsPrices', $params->getParams());
 		$response = json_decode($responseJSON);
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
 		{

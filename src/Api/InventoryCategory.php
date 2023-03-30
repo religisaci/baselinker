@@ -25,7 +25,7 @@ class InventoryCategory
 	public function getInventoryCategories(GetInventoryCategoriesParams $params = NULL): array
 	{
 		$inventoryCategories = [];
-		$responseJSON = (string)$this->client->post('getInventoryCategories', $params ? $params->getParams() : [])->getBody();
+		$responseJSON = (string)$this->client->post('getInventoryCategories', $params ? $params->getParams() : []);
 		$response = json_decode($responseJSON);
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
 		{
@@ -53,7 +53,7 @@ class InventoryCategory
 	 */
 	public function addInventoryCategory(\Religisaci\Baselinker\Model\InventoryCategory $inventoryCategory): \Religisaci\Baselinker\Model\InventoryCategory
 	{
-		$responseJSON = (string)$this->client->post('addInventoryCategory', $inventoryCategory->getData())->getBody();
+		$responseJSON = (string)$this->client->post('addInventoryCategory', $inventoryCategory->getData());
 		$response = json_decode($responseJSON);
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
 		{
@@ -74,7 +74,7 @@ class InventoryCategory
 	 */
 	public function deleteInventoryCategory(int $inventoryCategoryId): bool
 	{
-		$responseJSON = (string)$this->client->post('deleteInventoryCategory', ['category_id' => $inventoryCategoryId])->getBody();
+		$responseJSON = (string)$this->client->post('deleteInventoryCategory', ['category_id' => $inventoryCategoryId]);
 		$response = json_decode($responseJSON);
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
 		{

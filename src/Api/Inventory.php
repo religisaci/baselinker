@@ -21,7 +21,8 @@ class Inventory
 	public function getInventories(array $params = []): array
 	{
 		$inventories = [];
-		$responseJSON = $this->client->post('getInventories', $params)->getBody()->getContents();
+		$responseJSON = (string)$this->client->post('getInventories', $params);
+
 		$response = json_decode($responseJSON);
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
 		{
@@ -50,7 +51,7 @@ class Inventory
 
 	public function addInventory(\Religisaci\Baselinker\Model\Inventory $inventory): \Religisaci\Baselinker\Model\Inventory
 	{
-		$responseJSON = (string)$this->client->post('addInventory', $inventory->getData())->getBody();
+		$responseJSON = (string)$this->client->post('addInventory', $inventory->getData());
 		$response = json_decode($responseJSON);
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
 		{
@@ -64,7 +65,7 @@ class Inventory
 
 	public function deleteInventory(int $inventoryId): bool
 	{
-		$responseJSON = (string)$this->client->post('deleteInventory', ['inventory_id' => $inventoryId])->getBody();
+		$responseJSON = (string)$this->client->post('deleteInventory', ['inventory_id' => $inventoryId]);
 		$response = json_decode($responseJSON);
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
 		{

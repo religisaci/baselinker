@@ -20,7 +20,7 @@ class InventoryWarehouse
 	public function getInventoryWarehouses(): array
 	{
 		$inventoryWarehouses = [];
-		$responseJSON = (string)$this->client->post('getInventoryWarehouses')->getBody();
+		$responseJSON = (string)$this->client->post('getInventoryWarehouses');
 		$response = json_decode($responseJSON);
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
 		{
@@ -45,7 +45,7 @@ class InventoryWarehouse
 
 	public function addInventoryWarehouse(\Religisaci\Baselinker\Model\InventoryWarehouse $inventoryWarehouse): \Religisaci\Baselinker\Model\InventoryWarehouse
 	{
-		$responseJSON = (string)$this->client->post('addInventoryWarehouse', $inventoryWarehouse->getData())->getBody();
+		$responseJSON = (string)$this->client->post('addInventoryWarehouse', $inventoryWarehouse->getData());
 		$response = json_decode($responseJSON);
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
 		{
@@ -62,7 +62,7 @@ class InventoryWarehouse
 
 	public function deleteInventoryWarehouse(int $inventoryWarehouseId): bool
 	{
-		$responseJSON = (string)$this->client->post('deleteInventoryWarehouse', ['warehouse_id' => $inventoryWarehouseId])->getBody();
+		$responseJSON = (string)$this->client->post('deleteInventoryWarehouse', ['warehouse_id' => $inventoryWarehouseId]);
 		$response = json_decode($responseJSON);
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
 		{

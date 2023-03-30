@@ -24,7 +24,7 @@ class InventoryManufacturer
 	public function getInventoryManufacturers(): array
 	{
 		$inventoryManufacturers = [];
-		$responseJSON = (string)$this->client->post('getInventoryManufacturers')->getBody();
+		$responseJSON = (string)$this->client->post('getInventoryManufacturers');
 		$response = json_decode($responseJSON);
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
 		{
@@ -51,7 +51,7 @@ class InventoryManufacturer
 	 */
 	public function addInventoryManufacturer(\Religisaci\Baselinker\Model\InventoryManufacturer $inventoryManufacturer): \Religisaci\Baselinker\Model\InventoryManufacturer
 	{
-		$responseJSON = (string)$this->client->post('addInventoryManufacturer', $inventoryManufacturer->getData())->getBody();
+		$responseJSON = (string)$this->client->post('addInventoryManufacturer', $inventoryManufacturer->getData());
 		$response = json_decode($responseJSON);
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
 		{
@@ -72,7 +72,7 @@ class InventoryManufacturer
 	 */
 	public function deleteInventoryManufacturer(int $inventoryManufacturerId): bool
 	{
-		$responseJSON = (string)$this->client->post('deleteInventoryManufacturer', ['manufacturer_id' => $inventoryManufacturerId])->getBody();
+		$responseJSON = (string)$this->client->post('deleteInventoryManufacturer', ['manufacturer_id' => $inventoryManufacturerId]);
 		$response = json_decode($responseJSON);
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
 		{

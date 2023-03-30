@@ -22,7 +22,7 @@ class Order
 	public function getOrders(?GetOrdersParams $params = NULL): array
 	{
 		$orders = [];
-		$responseJSON = (string)$this->client->post('getOrders', $params ? $params->getParams() : [])->getBody();
+		$responseJSON = (string)$this->client->post('getOrders', $params ? $params->getParams() : []);
 		$response = json_decode($responseJSON);
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
 		{
@@ -119,7 +119,7 @@ class Order
 	public function getOrderStatusList():array
 	{
 		$orderStatuses = [];
-		$responseJSON = (string)$this->client->post('getOrderStatusList')->getBody();
+		$responseJSON = (string)$this->client->post('getOrderStatusList');
 		$response = json_decode($responseJSON);
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
 		{
@@ -142,7 +142,7 @@ class Order
 
 	public function setOrderStatus(int $orderId, int $statusId): bool
 	{
-		$responseJSON = (string)$this->client->post('setOrderStatus', ['order_id' => $orderId, 'status_id' => $statusId])->getBody();
+		$responseJSON = (string)$this->client->post('setOrderStatus', ['order_id' => $orderId, 'status_id' => $statusId]);
 		$response = json_decode($responseJSON);
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
 		{

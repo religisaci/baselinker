@@ -2,9 +2,9 @@
 
 namespace Religisaci\Baselinker\Api;
 
-use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\RequestOptions;
-use ReligisCore\BaselinkerConnector\Exception\BlockedToken;
+use Psr\Http\Message\StreamInterface;
+use Religisaci\Baselinker\Exception\BlockedToken;
 
 class Client
 {
@@ -24,10 +24,10 @@ class Client
 	/**
 	 * @param string $method
 	 * @param array|null $data
-	 * @return Response
+	 * @return StreamInterface
 	 * @throws BlockedToken
 	 */
-	public function post(string $method, ?array $data = NULL): Response
+	public function post(string $method, ?array $data = NULL): StreamInterface
 	{
 		$postData = [
 			'method' => $method,
@@ -41,17 +41,16 @@ class Client
 		{
 			$response = $this->getClient()->post('', [
 				RequestOptions::FORM_PARAMS => $postData,
-			]);
+			])->getBody();
 
-			$responseString = (string)$response;
-			$responseData = json_decode($responseString);
+			$responseData = json_decode((string)$response);
 			if($this->waitIfBlockedToken === TRUE && $responseData && isset($responseData->status) && isset($responseData->error_code) && isset($responseData->error_message) && $responseData->status == 'ERROR' && $responseData->error_code == 'ERROR_BLOCKED_TOKEN')
 			{
 				if($this->countOfBlocking > 5)
 				{
 					throw new BlockedToken('BaselinkerClient: ' . $responseData->error_message);
 				}
-				//2023-03-30 09:34:29
+
 				if(preg_match('/^.*(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})$/', $responseData->error_message, $matches))
 				{
 					$this->countOfBlocking++;
@@ -59,17 +58,21 @@ class Client
 					$datetimeEndBlocking = \DateTime::createFromFormat('Y-m-d H:i:s', $datetimeEndBlocking);
 					if($datetimeEndBlocking)
 					{
-						$now = new DateTime();
+						$now = new \DateTime();
 						$timeFormWaiting = $datetimeEndBlocking->format('U') - $now->format('U');
+						if($timeFormWaiting > 300)
+						{
+							throw new BlockedToken('BaselinkerClient: ' . $responseData->error_message);
+						}
 						sleep($timeFormWaiting + 10);
 						continue;
+
 					}
 				}
 			}
 
 			break;
-		}
-		while(TRUE);
+		} while(TRUE);
 
 
 		return $response;

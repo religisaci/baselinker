@@ -20,7 +20,7 @@ class Shipment
 
 	public function createPackageManual(PackageManual $packageManual): PackageManual
 	{
-		$responseJSON = (string)$this->client->post('createPackageManual', $packageManual->getData())->getBody();
+		$responseJSON = (string)$this->client->post('createPackageManual', $packageManual->getData());
 		$response = json_decode($responseJSON);
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
 		{
@@ -37,7 +37,7 @@ class Shipment
 	public function getCouriersList()
 	{
 		$couriers = [];
-		$responseJSON = (string)$this->client->post('getCouriersList')->getBody();
+		$responseJSON = (string)$this->client->post('getCouriersList');
 		$response = json_decode($responseJSON);
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
 		{
@@ -58,7 +58,7 @@ class Shipment
 
 	public function getCourierFields(?GetCourierFields $params = NULL): \stdClass
 	{
-		$responseJSON = (string)$this->client->post('getCourierFields', $params ? $params->getParams() : [])->getBody();
+		$responseJSON = (string)$this->client->post('getCourierFields', $params ? $params->getParams() : []);
 		$response = json_decode($responseJSON);
 		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
 		{
