@@ -23,7 +23,7 @@ class Baselinker
 	public function __construct(array $config)
 	{
 		$this->config = new Config($config);
-		$this->client = new Client($this->config->getConfigValue('token'));
+		$this->client = new Client($this->config->getConfigValue('token'), $this->config->getConfigValue('waitIfBlockedToken'));
 		$this->repositoryFactory = new RepositoryFactory($this->client);
 	}
 
