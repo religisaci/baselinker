@@ -87,19 +87,19 @@ class Client
 
 	private function waitForNewSetOfRequests()
 	{
+		$this->requestInMinute++;
 		$currentMinute = (int)date('i');
 		if($this->currentMinute != $currentMinute)
 		{
 			$this->currentMinute = $currentMinute;
 			$this->requestInMinute = 0;
 		}
-		if($this->requestInMinute > $this->limitRequestPerMinute)
+		if($this->requestInMinute >= $this->limitRequestPerMinute)
 		{
 			$sleepTime = 60 - (int)date('s');
 			sleep($sleepTime > 0 ? $sleepTime : 1);
 			$this->requestInMinute = 0;
 		}
-		$this->requestInMinute++;
 	}
 
 	private function getClient(): \GuzzleHttp\Client
