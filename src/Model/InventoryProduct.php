@@ -94,11 +94,8 @@ class InventoryProduct
 		{
 			$this->parameters = [];
 		}
-		if($language !== NULL)
-		{
-			$name .= '|'.$language;
-		}
-		$this->parameters[$name][$value] = $value;
+		$language = $language ?: 'default';
+		$this->parameters[$language][$name][$value] = $value;
 	}
 
 	public function addTextField(string $textFiled, string $text, ?string $language = NULL, ?string $service = NULL, ?int $serviceId = NULL)
@@ -231,12 +228,21 @@ class InventoryProduct
 			{
 				$data['text_fields'] = [];
 			}
-			$data['text_fields']['features'] = [];
-			foreach($this->parameters as $parameter => $values)
+
+			foreach($this->parameters as $language => $parameters)
 			{
-				foreach($values as $value)
+				$textFieldName = 'features';
+				if($language != 'default')
 				{
-					$data['text_fields']['features'][$parameter] = $value;
+					$textFieldName = 'features|' . $language;
+				}
+				$data['text_fields'][$textFieldName] = [];
+				foreach($parameters as $parameter => $values)
+				{
+					foreach($values as $value)
+					{
+						$data['text_fields'][$textFieldName][$parameter] = $value;
+					}
 				}
 			}
 		}
