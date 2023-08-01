@@ -88,11 +88,15 @@ class InventoryProduct
 		$this->stock[$warehouseId] = $count;
 	}
 
-	public function addParameter(string $name, string $value)
+	public function addParameter(string $name, string $value, ?string $language = NULL)
 	{
 		if(!isset($this->parameters))
 		{
 			$this->parameters = [];
+		}
+		if($language !== NULL)
+		{
+			$name .= '|'.$language;
 		}
 		$this->parameters[$name][$value] = $value;
 	}
