@@ -2,6 +2,7 @@
 
 namespace Religisaci\Baselinker\Api;
 
+use Religisaci\Baselinker\Api\RequestParams\GetJournalListParams;
 use Religisaci\Baselinker\Exception\ResponseException;
 use Religisaci\Baselinker\Api\RequestParams\GetOrdersParams;
 use Religisaci\Baselinker\Model\OrderProduct;
@@ -152,5 +153,33 @@ class Order
 		}
 
 		return TRUE;
+	}
+
+
+
+	public function getJournalList(?GetJournalListParams $params = NULL):array
+	{
+		$ordersJournalList = [];
+		$responseJSON = (string)$this->client->post('getJournalList', $params ? $params->getParams() : []);
+		$response = json_decode($responseJSON);
+		if(!$response || !isset($response->status) || $response->status != 'SUCCESS')
+		{
+			$exception = new ResponseException("Bad response. Response body:\n" . var_export($response, TRUE));
+			$exception->response = $responseJSON;
+			throw $exception;
+		}
+		foreach($response->logs as $logResponse)
+		{
+			$orderLog = new \Religisaci\Baselinker\Model\OrderLog();
+			$orderLog->log_id = (int)$logResponse->log_id;
+			$orderLog->log_type = (int)$logResponse->log_type;
+			$orderLog->order_id = (int)$logResponse->order_id;
+			$orderLog->object_id = (int)$logResponse->object_id;
+			$orderLog->date = (int)$logResponse->date;
+			$ordersJournalList[] = $orderLog;
+		}
+
+
+		return $ordersJournalList;
 	}
 }
