@@ -22,7 +22,7 @@ class InventoryCategory
 	 * @return array
 	 * @throws ResponseException
 	 */
-	public function getInventoryCategories(GetInventoryCategoriesParams $params = NULL): array
+	public function getInventoryCategories(?GetInventoryCategoriesParams $params = NULL): array
 	{
 		$inventoryCategories = [];
 		$responseJSON = (string)$this->client->post('getInventoryCategories', $params ? $params->getParams() : []);
